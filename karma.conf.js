@@ -36,16 +36,6 @@ module.exports = function(config) {
     preprocessors: {
     },
 
-    plugins : [
-    // 'karma-junit-reporter',
-    // 'karma-firefox-launcher',
-    // 'karma-opera-launcher',
-    // 'karma-ie-launcher',
-    // 'karma-chrome-launcher',
-        'karma-phantomjs-launcher',
-        'karma-jasmine'
-    ],
-
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
@@ -72,7 +62,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ['Firefox', 'Chrome'],
 
 
     // Continuous Integration mode

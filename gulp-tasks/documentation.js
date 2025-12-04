@@ -1,6 +1,6 @@
 var livereload = require('gulp-livereload');
 var git = require('git-rev');
-const sass        = require('gulp-sass');
+const sass        = require('gulp-sass')(require('sass'));
 const autoprefixer = require('gulp-autoprefixer');
 
 

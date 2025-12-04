@@ -1,3 +1,4 @@
+@use "sass:math";
 @import "./mixins/cf-mixins";
 
 $cf-color-background: #fff;
@@ -25,8 +26,8 @@ cf-input-button.cf-input-button:hover, cf-input-button.cf-input-button:focus {
 }
 
 cf-input[tag-type="file"] cf-input-button.cf-input-button:after, cf-input cf-input-button.cf-input-button.loading:after {
-	width: $cf-input-field-height / 2;
-	height: $cf-input-field-height / 2;
+	width: math.div($cf-input-field-height, 2);
+	height: math.div($cf-input-field-height, 2);
 	position: relative;
 	left: calc(50% - (#{$cf-input-field-height} / 4));
 	top: calc(50% - (#{$cf-input-field-height} / 4));

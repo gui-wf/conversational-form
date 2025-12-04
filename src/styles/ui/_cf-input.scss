@@ -1,3 +1,4 @@
+@use "sass:math";
 @import "../_cf-variables";
 
 $introDelay: 0.4s;
@@ -116,7 +117,7 @@ cf-input {
 			color: currentColor;
 		}
 
-		transition: all $cf-anim-time/2.4 !important;
+		transition: all math.div($cf-anim-time, 2.4) !important;
 		
 		&[no-animations] {
 			transition: none !important;
@@ -228,9 +229,9 @@ cf-input {
 			position: relative;
 			left: calc(50% - (#{$cf-input-field-height} / 4));
 			top: calc(50% - (#{$cf-input-field-height} / 4));
-			
-			width: $cf-input-field-height / 2;
-			height: $cf-input-field-height / 2;
+
+			width: math.div($cf-input-field-height, 2);
+			height: math.div($cf-input-field-height, 2);
 			
 			border: 1px solid rgba(#b9bcbe, 50%);
 			border-radius: 50%;

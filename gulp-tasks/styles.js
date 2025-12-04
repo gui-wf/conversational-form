@@ -8,7 +8,7 @@ var concat = require('gulp-concat');
 var cleanCSS = require('gulp-clean-css');
 var rename = require('gulp-rename');
 
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const autoprefixer = require('gulp-autoprefixer');
 
 function swallowError(error) {
@@ -20,26 +20,6 @@ function swallowError(error) {
 /**
  * OBS: seperate build tasks out so we can split the project into smaller pieces later.
  */
-
-/**
- * form style tasks
- */
-
-global.gulp.task('sass-form-build', ['sass-form'], function(){
-	var src = [
-		global.buildFolder + "conversational-form*.css"
-	]
-
-	var stream = global.gulp.src(src)
-		// .pipe(concat('conversational-form.css'))
-		.pipe(global.gulp.dest(global.distFolder))
-		.pipe(cleanCSS())
-		.pipe(rename({suffix: '.min'}))
-		.pipe(global.gulp.dest(global.distFolder));
-
-	return stream;
-});
-
 
 /**
  * SCSS
@@ -59,6 +39,25 @@ global.gulp.task('sass-form', function () {
 
 	return stream;
 });
+
+/**
+ * form style tasks
+ */
+
+global.gulp.task('sass-form-build', global.gulp.series('sass-form', function(){
+	var src = [
+		global.buildFolder + "conversational-form*.css"
+	]
+
+	var stream = global.gulp.src(src)
+		// .pipe(concat('conversational-form.css'))
+		.pipe(global.gulp.dest(global.distFolder))
+		.pipe(cleanCSS())
+		.pipe(rename({suffix: '.min'}))
+		.pipe(global.gulp.dest(global.distFolder));
+
+	return stream;
+}));
 
 
 

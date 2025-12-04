@@ -1,3 +1,4 @@
+@use "sass:math";
 @import "../../_cf-variables";
 
 .conversational-form.done {
@@ -31,7 +32,7 @@ cf-chat-response {
 	padding-bottom: 12px;
 
 	@media (max-width: $cf-breakpoint-medium) {
-		padding-left: ($cf-avatar-area / 1.4) + 12px;
+		padding-left: math.div($cf-avatar-area, 1.4) + 12px;
 	}
 
 	&.show {
@@ -60,7 +61,7 @@ cf-chat-response {
 		color: lighten($cf-color-secondary, 90%);
 
 		@media (max-width: $cf-breakpoint-medium) {
-			padding-right: ($cf-avatar-area / 1.4) + 12px;
+			padding-right: math.div($cf-avatar-area, 1.4) + 12px;
 		}
 
 		thumb {
@@ -134,7 +135,7 @@ cf-chat-response {
 		thinking {
 			@for $num from 1 through 3 {
 				span:nth-child(#{$num}) {
-					animation-delay: ($num * (1 - (1 / 3))s);
+					animation-delay: ($num * (1 - math.div(1, 3))s);
 				}
 			}
 		}
@@ -235,7 +236,7 @@ cf-chat-response {
 
 			@for $num from 1 through 3 {
 				span:nth-child(#{$num}) {
-					animation: dot-fade 1s linear ($num * (1 / 3)s) infinite;
+					animation: dot-fade 1s linear ($num * math.div(1, 3)s) infinite;
 				}
 			}
 		}
@@ -271,8 +272,8 @@ cf-chat-response {
 		will-change: transform, opacity;
 
 		@media (max-width: $cf-breakpoint-medium) {
-			width: $cf-avatar-area / 1.26;
-			height: $cf-avatar-area / 1.26;
+			width: math.div($cf-avatar-area, 1.26);
+			height: math.div($cf-avatar-area, 1.26);
 		}
 		
 		.conversational-form--enable-animation & {

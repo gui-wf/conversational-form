@@ -97,6 +97,15 @@
 		}
 	}
 
+	&.highlight {
+		background: $cf-color-primary;
+		color: $cf-color-secondary;
+
+		> div {
+			opacity: 1;
+		}
+	}
+
 	.cf-image {
 		width: 100%;
 		height: auto;

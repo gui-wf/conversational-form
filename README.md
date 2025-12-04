@@ -1,5 +1,9 @@
 # Conversational Form
 
+> **Fork Notice:** This is a personal fork of the original [space10-community/conversational-form](https://github.com/space10-community/conversational-form) repository. This fork exists for self-usage in other projects. While some updating and maintenance will happen as needed, continuous support is not guaranteed. For the original project and community support, please refer to the upstream repository.
+>
+> **Modernization Guide:** See [MODERNIZATION.md](MODERNIZATION.md) for technical upgrade paths and build system improvements.
+
 Conversational Form is an open-source concept by [SPACE10](https://www.space10.io) to easily turn your content into conversations. It features conversational replacement of all input elements, reusable variables from previous questions and complete customization and control over the styling.
 
 <p align="center">
