@@ -6836,10 +6836,12 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -6864,7 +6866,7 @@ var cf;
             get: function () {
                 return "OptionButton";
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(OptionButton.prototype, "selected", {
@@ -6879,7 +6881,7 @@ var cf;
                     this.el.removeAttribute("selected");
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         OptionButton.prototype.setData = function (options) {
@@ -6895,7 +6897,9 @@ var cf;
         // override
         OptionButton.prototype.getTemplate = function () {
             // be aware that first option element on none multiple select tags will be selected by default
-            var tmpl = '<cf-button class="cf-button ' + (this.isMultiChoice ? "cf-checkbox-button" : "") + '" ' + (this.referenceTag.domElement.selected ? "selected='selected'" : "") + '>';
+            // Why: Check disableSelectPrefill config to control auto-selection behavior
+            var isSelected = cf.ConversationalForm.disableSelectPrefill ? false : this.referenceTag.domElement.selected;
+            var tmpl = '<cf-button class="cf-button ' + (this.isMultiChoice ? "cf-checkbox-button" : "") + '" ' + (isSelected ? "selected='selected'" : "") + '>';
             tmpl += "<div>";
             if (this.isMultiChoice)
                 tmpl += "<cf-checkbox></cf-checkbox>";
@@ -7839,10 +7843,12 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -7911,7 +7917,7 @@ var cf;
             get: function () {
                 return this.inputElement === document.activeElement || this._active;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(UserTextInput.prototype, "disabled", {
@@ -7931,11 +7937,13 @@ var cf;
                     }
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         UserTextInput.prototype.getInputValue = function () {
-            var str = this.inputElement.value;
+            // Why: Trim leading spaces to prevent empty input with only spaces
+            // How: Use regex replace for ES5 compatibility (trimStart requires ES2019)
+            var str = this.inputElement.value.replace(/^\s+/, '');
             // Build-in way to handle XSS issues ->
             var div = document.createElement('div');
             div.appendChild(document.createTextNode(str));
@@ -9457,6 +9465,8 @@ var cf;
                 ConversationalForm.showProgressBar = options.showProgressBar;
             if (typeof options.preventSubmitOnEnter === 'boolean')
                 this.preventSubmitOnEnter = options.preventSubmitOnEnter;
+            if (typeof options.disableSelectPrefill === 'boolean')
+                ConversationalForm.disableSelectPrefill = options.disableSelectPrefill;
             if (!ConversationalForm.suppressLog)
                 console.log('Conversational Form > version:', this.version);
             if (!ConversationalForm.suppressLog)
@@ -9532,7 +9542,7 @@ var cf;
                 }
                 return this._createId;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(ConversationalForm.prototype, "eventTarget", {
@@ -9542,7 +9552,7 @@ var cf;
                 }
                 return this._eventTarget;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         ConversationalForm.prototype.init = function () {
@@ -9993,6 +10003,7 @@ var cf;
         ConversationalForm.suppressLog = true;
         ConversationalForm.showProgressBar = false;
         ConversationalForm.preventSubmitOnEnter = false;
+        ConversationalForm.disableSelectPrefill = false;
         ConversationalForm.hasAutoInstantiated = false;
         return ConversationalForm;
     }());

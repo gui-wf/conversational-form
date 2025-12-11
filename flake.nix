@@ -27,7 +27,6 @@
           shellHook = ''
             echo "Conversational Form build environment loaded"
             echo "Node: $(node --version)"
-            echo "Gulp: $(gulp --version)"
           '';
         };
       }

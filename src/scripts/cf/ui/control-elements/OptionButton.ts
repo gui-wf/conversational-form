@@ -47,7 +47,9 @@ namespace cf {
 		// override
 		public getTemplate () : string {
 			// be aware that first option element on none multiple select tags will be selected by default
-			let tmpl: string = '<cf-button class="cf-button ' + (this.isMultiChoice ? "cf-checkbox-button" : "") + '" ' + ((<HTMLOptionElement> this.referenceTag.domElement).selected ? "selected='selected'" : "") + '>';
+			// Why: Check disableSelectPrefill config to control auto-selection behavior
+			const isSelected = ConversationalForm.disableSelectPrefill ? false : (<HTMLOptionElement> this.referenceTag.domElement).selected;
+			let tmpl: string = '<cf-button class="cf-button ' + (this.isMultiChoice ? "cf-checkbox-button" : "") + '" ' + (isSelected ? "selected='selected'" : "") + '>';
 
 			tmpl += "<div>";
 			if(this.isMultiChoice)

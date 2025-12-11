@@ -1,6 +1,6 @@
 {
   "name": "conversational-form",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Turning web forms into conversations",
   "main": "dist/conversational-form.js",
   "directories": {
@@ -33,7 +33,9 @@
   "scripts": {
     "bundle-fuzzy": "browserify src/scripts/cf/vendor/fast-fuzzy-entry.js -o build/cf/vendor/fast-fuzzy-standalone.js --standalone FastFuzzy",
     "build": "gulp build",
-    "build:all": "npm run bundle-fuzzy && npm run build"
+    "build:all": "npm run bundle-fuzzy && npm run build",
+    "copy-dist": "sh scripts/copy-dist.sh",
+    "build:copy": "npm run build:all && npm run copy-dist"
   },
   "dependencies": {
     "fast-fuzzy": "^1.12.0"

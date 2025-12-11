@@ -124,7 +124,9 @@ namespace cf {
 		}
 
 		public getInputValue():string{
-			const str: string = this.inputElement.value;
+			// Why: Trim leading spaces to prevent empty input with only spaces
+			// How: Use regex replace for ES5 compatibility (trimStart requires ES2019)
+			const str: string = this.inputElement.value.replace(/^\s+/, '');
 
 			// Build-in way to handle XSS issues ->
 			const div = document.createElement('div');
