@@ -9,6 +9,9 @@
 /// <reference path="../chat/ChatResponse.ts"/>
 /// <reference path="../../../typings/globals/es6-promise/index.d.ts"/>
 
+// Declare FastFuzzy global (provided by fast-fuzzy-standalone.js)
+declare var FastFuzzy: any;
+
 // namespace
 namespace cf {
 	export const ControlElementsEvents = {
@@ -303,7 +306,26 @@ namespace cf {
 			}
 		}
 
-		private filterElementsFrom(value:string){
+		private getWeightedScore(input: string, target: string, threshold: number): number {
+		const inputLower = input.toLowerCase().trim();
+		const targetLower = target.toLowerCase().trim();
+
+		if (!inputLower || !targetLower) return 0;
+
+		// Exact match - highest priority
+		if (inputLower === targetLower) return 1.0;
+
+		// Starts with (prefix match) - very high score
+		if (targetLower.startsWith(inputLower)) return 0.95;
+
+		// Ends with (suffix match) - high score
+		if (targetLower.endsWith(inputLower)) return 0.90;
+
+		// Fuzzy match using fast-fuzzy
+		return FastFuzzy.fuzzy(inputLower, targetLower, { threshold });
+	}
+
+	private filterElementsFrom(value:string){
 			const inputValuesLowerCase: Array<string> = value.toLowerCase().split(" ");
 			if(inputValuesLowerCase.indexOf("") != -1)
 				inputValuesLowerCase.splice(inputValuesLowerCase.indexOf(""), 1);
@@ -316,20 +338,37 @@ namespace cf {
 					let element: ControlElement = <ControlElement>elements[i];
 					element.highlight = false;
 					let elementVisibility: boolean = true;
-					
-					// check for all words of input
+					let maxScore: number = 0;
+
+					// check for all words of input with fuzzy matching
 					for (let i = 0; i < inputValuesLowerCase.length; i++) {
 						let inputWord: string = <string>inputValuesLowerCase[i];
 						if(elementVisibility){
-							elementVisibility = element.value.toLowerCase().indexOf(inputWord) != -1;
+							// Check both cf-label and option value with weighted scoring
+							const labelText = element.value;
+							const optionValue = element.referenceTag ? element.referenceTag.value.toString() : '';
+							const threshold = 0.6;
+
+							// Use weighted scoring on both label and value
+							const labelScore = this.getWeightedScore(inputWord, labelText, threshold);
+							const valueScore = this.getWeightedScore(inputWord, optionValue, threshold);
+
+							const score = Math.max(labelScore, valueScore);
+							maxScore = Math.max(maxScore, score);
+							elementVisibility = score >= threshold;
 						}
 					}
 
-					// set element visibility.
+					// set element visibility and store the score
 					element.visible = elementVisibility;
-					if(elementVisibility && element.visible) 
+					if(elementVisibility && element.visible) {
+						(<any>element).matchScore = maxScore;
 						itemsVisible.push(element);
+					}
 				}
+
+				// Sort itemsVisible by score (descending) before highlighting
+				itemsVisible.sort((a, b) => ((<any>b).matchScore || 0) - ((<any>a).matchScore || 0));
 
 				// set feedback text for filter..
 				this.infoElement.innerHTML = itemsVisible.length == 0 ? Dictionary.get("input-no-filter").split("{input-value}").join(value) : "";

@@ -1,11 +1,33 @@
 /// <reference path="Tag.ts"/>
 
+// Declare FastFuzzy global (provided by fast-fuzzy-standalone.js)
+declare var FastFuzzy: any;
+
 // namespace
 namespace cf {
 	// interface
 
 	// class
 	export class SelectTag extends Tag {
+
+		private getWeightedScore(input: string, target: string, threshold: number): number {
+			const inputLower = input.toLowerCase().trim();
+			const targetLower = target.toLowerCase().trim();
+
+			if (!inputLower || !targetLower) return 0;
+
+			// Exact match - highest priority
+			if (inputLower === targetLower) return 1.0;
+
+			// Starts with (prefix match) - very high score
+			if (targetLower.startsWith(inputLower)) return 0.95;
+
+			// Ends with (suffix match) - high score
+			if (targetLower.endsWith(inputLower)) return 0.90;
+
+			// Fuzzy match using fast-fuzzy
+			return FastFuzzy.fuzzy(inputLower, targetLower, { threshold });
+		}
 
 		public optionTags: Array<OptionTag>;
 		private _values: Array<string>;
@@ -75,22 +97,37 @@ namespace cf {
 					}
 				}
 			}else{
-				let wasSelected: boolean = false;
-				// for when we don't have any control elements, then we just try and map values
+				// for when we don't have any control elements, use fuzzy matching to map values
+				let bestMatch: ITag = null;
+				let bestScore: number = 0;
+				const threshold = 0.6;
+				const userText = dto.text.toString();
+
 				for (let i = 0; i < this.optionTags.length; i++) {
 					let tag: ITag = <ITag>this.optionTags[i];
-					const v1: string = tag.value.toString().toLowerCase();
-					const v2: string = dto.text.toString().toLowerCase();
-					//brute force checking...
-					if(v1.indexOf(v2) !== -1 || v2.indexOf(v1) !== -1){
-						// check the original tag
-						this._values.push(<string> tag.value);
-						(<HTMLInputElement> tag.domElement).checked = true;
-						wasSelected = true;
+					const optionValue = tag.value.toString();
+					const labelText = tag.label || '';
+
+					// Check both value and label with weighted scoring
+					const valueScore = this.getWeightedScore(userText, optionValue, threshold);
+					const labelScore = this.getWeightedScore(userText, labelText, threshold);
+
+					// Take the higher of the two scores
+					const maxScore = Math.max(valueScore, labelScore);
+
+					// Track the best match
+					if(maxScore > bestScore){
+						bestScore = maxScore;
+						bestMatch = tag;
 					}
 				}
 
-				isValid = wasSelected;
+				// Select only the best match if it meets the threshold
+				if(bestMatch && bestScore >= threshold){
+					this._values.push(<string> bestMatch.value);
+					(<HTMLInputElement> bestMatch.domElement).checked = true;
+					isValid = true;
+				}
 			}
 
 			// special case 1, only one optiontag visible from a filter

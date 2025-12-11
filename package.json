@@ -30,7 +30,16 @@
   "ignore": [
     "build"
   ],
+  "scripts": {
+    "bundle-fuzzy": "browserify src/scripts/cf/vendor/fast-fuzzy-entry.js -o build/cf/vendor/fast-fuzzy-standalone.js --standalone FastFuzzy",
+    "build": "gulp build",
+    "build:all": "npm run bundle-fuzzy && npm run build"
+  },
+  "dependencies": {
+    "fast-fuzzy": "^1.12.0"
+  },
   "devDependencies": {
+    "browserify": "^17.0.1",
     "graceful-fs": "^4.2.11",
     "gulp": "^4.0.2",
     "jasmine-core": "^4.6.0",

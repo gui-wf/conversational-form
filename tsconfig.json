@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "none",
+    "lib": ["ES5", "ES2015", "DOM"],
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "types": []
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist",
+    "docs"
+  ]
+}

@@ -33,7 +33,9 @@ global.gulp.task('typescript-form', function() {
 		.pipe(typescript({
 			noImplicitAny: true,
 			target: "ES5",
-			module: "none"//AMD... etc.
+			module: "none",//AMD... etc.
+			skipLibCheck: true,
+			types: []
 		}))
 		.on('error', swallowError)
 		.pipe(global.gulp.dest(dst))
@@ -63,6 +65,9 @@ global.gulp.task('scripts-form-build', global.gulp.series('scripts-form', functi
 	var src = [
 		global.buildFolder + "bower_components/promise-polyfill/promise.js",
 		global.buildFolder + "bower_components/custom-event-polyfill/custom-event-polyfill.js",
+
+		// Fast-fuzzy standalone bundle for fuzzy matching support
+		global.buildFolder + "cf/vendor/fast-fuzzy-standalone.js",
 
 		global.buildFolder + "cf/logic/Helpers.js",
 		global.buildFolder + "cf/logic/EventDispatcher.js",
