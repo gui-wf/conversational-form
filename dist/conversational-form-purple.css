@@ -211,7 +211,7 @@ cf-input input, cf-input textarea {
   user-select: auto !important;
 }
 cf-input input:focus, cf-input input:active, cf-input textarea:focus, cf-input textarea:active {
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: none;
 }
 cf-input input, cf-input textarea {
   border-radius: 0px;
@@ -233,7 +233,7 @@ cf-input input, cf-input textarea {
   transform: translateY(40px) rotateX(-40deg);
 }
 .conversational-form--enable-animation cf-input input, .conversational-form--enable-animation cf-input textarea {
-  transition: box-shadow 0.75s cubic-bezier(0.215, 0.61, 0.355, 1), background 0.75s cubic-bezier(0.215, 0.61, 0.355, 1), color 0.75s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.375s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, opacity 0.375s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+  transition: background 0.75s cubic-bezier(0.215, 0.61, 0.355, 1), color 0.75s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.375s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, opacity 0.375s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
 }
 cf-input input:hover::-webkit-input-placeholder, cf-input textarea:hover::-webkit-input-placeholder {
   color: rgb(8.90625, 9.5, 10.09375);
@@ -260,7 +260,7 @@ cf-input input:-ms-input-placeholder, cf-input textarea:-ms-input-placeholder {
   color: currentColor;
 }
 cf-input input, cf-input textarea {
-  transition: all 0.3125s !important;
+  transition: color 0.3125s ease, background-color 0.3125s ease !important;
 }
 cf-input input[no-animations], cf-input textarea[no-animations] {
   transition: none !important;
@@ -1139,10 +1139,10 @@ cf-input-control-elements.two-row.animate-in cf-list:last-of-type {
 }
 
 cf-list, cf-list-button {
-  will-change: height;
+  will-change: auto;
 }
 .conversational-form--enable-animation cf-list, .conversational-form--enable-animation cf-list-button {
-  transition: height 0.375s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: none;
 }
 
 cf-input[tag-type=file] cf-list  {
@@ -1217,13 +1217,13 @@ cf-list.disabled {
   opacity: 0;
 }
 .conversational-form--enable-animation .cf-button {
-  transition: opacity 0s cubic-bezier(0.215, 0.61, 0.355, 1), background 0.75s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: background 0.75s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 .conversational-form--enable-animation .cf-button.animate-in:nth-child(even) {
-  transition-delay: 0.05s, 0s;
+  transition-delay: 0s, 0s;
 }
 .conversational-form--enable-animation .cf-button.animate-in:nth-child(odd) {
-  transition-delay: 0.15s, 0s;
+  transition-delay: 0s, 0s;
 }
 .conversational-form--enable-animation .cf-button.animate-in {
   transition-duration: 0.375s, 0.75s;

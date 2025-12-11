@@ -41,16 +41,16 @@
 	will-change: opacity, background;
 	opacity: 0;
 	.conversational-form--enable-animation & {
-		transition: opacity 0s $cf-ease-easeOut, background $cf-anim-time $cf-ease-easeOut;
+		transition: background $cf-anim-time $cf-ease-easeOut;
 	}
 
 	&.animate-in {
 		.conversational-form--enable-animation & {
 			&:nth-child(even) {
-				transition-delay: 0.05s, 0s;
+				transition-delay: 0s, 0s;
 			}
 			&:nth-child(odd) {
-				transition-delay: 0.15s, 0s;
+				transition-delay: 0s, 0s;
 			}
 
 			transition-duration: $cf-anim-time * 0.5, $cf-anim-time;

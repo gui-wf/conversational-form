@@ -9450,7 +9450,7 @@ var cf;
 (function (cf_1) {
     var ConversationalForm = /** @class */ (function () {
         function ConversationalForm(options) {
-            this.version = "1.0.2";
+            this.version = "2.0.0";
             this.cdnPath = "https://cdn.jsdelivr.net/gh/space10-community/conversational-form@{version}/dist/";
             this.isDevelopment = false;
             this.loadExternalStyleSheet = true;

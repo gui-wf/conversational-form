@@ -58,7 +58,7 @@ cf-input {
 		user-select: auto !important;
 
 		&:focus, &:active {
-			box-shadow: 0px 0px 6px rgba(0,0,0,0.3);
+			box-shadow: none;
 		}
 		
 		border-radius: $cf-input-field-border-radius;
@@ -87,7 +87,7 @@ cf-input {
 		transform: translateY(40px) rotateX(-40deg);
 
 		.conversational-form--enable-animation & {
-			transition: box-shadow $cf-anim-time $cf-ease-easeOut, background $cf-anim-time $cf-ease-easeOut, color $cf-anim-time $cf-ease-easeOut, transform $cf-anim-time * 0.5 $cf-ease-easeOutBack 0s, opacity $cf-anim-time * 0.5 $cf-ease-easeOut 0s;
+			transition: background $cf-anim-time $cf-ease-easeOut, color $cf-anim-time $cf-ease-easeOut, transform $cf-anim-time * 0.5 $cf-ease-easeOutBack 0s, opacity $cf-anim-time * 0.5 $cf-ease-easeOut 0s;
 		}
 
 		&:hover {
@@ -117,7 +117,7 @@ cf-input {
 			color: currentColor;
 		}
 
-		transition: all math.div($cf-anim-time, 2.4) !important;
+		transition: color math.div($cf-anim-time, 2.4) ease, background-color math.div($cf-anim-time, 2.4) ease !important;
 		
 		&[no-animations] {
 			transition: none !important;
