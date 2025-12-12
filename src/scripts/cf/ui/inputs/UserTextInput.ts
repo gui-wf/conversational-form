@@ -415,7 +415,12 @@ namespace cf {
 				this.buildControlElements([this._currentTag]);
 			}
 
-			if (this._currentTag.defaultValue) {
+			// Prefill input only when prefillDefaultAnswer is enabled
+			// Why: For select elements, only prefill when explicitly enabled to avoid confusing stale values
+			const shouldPrefill = this._currentTag.defaultValue &&
+			                      (this._currentTag.type !== 'select' || ConversationalForm.prefillDefaultAnswer);
+
+			if (shouldPrefill) {
 				this.inputElement.value = this._currentTag.defaultValue.toString();
 			}
 

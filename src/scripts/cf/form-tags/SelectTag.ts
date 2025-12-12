@@ -19,6 +19,32 @@ namespace cf {
 			// Exact match - highest priority
 			if (inputLower === targetLower) return 1.0;
 
+			// Why: Handle numeric range matching (e.g., "2" matches "0-2" better than "11-20")
+			// How: Parse ranges and check if input number falls within target range
+			const inputNum = parseFloat(inputLower);
+			if (!isNaN(inputNum)) {
+				// Check if target is a closed numeric range (e.g., "0-2", "11-20", "5.5-10.2")
+				const rangeMatch = targetLower.match(/^(\d+\.?\d*)\s*[-–—]\s*(\d+\.?\d*)$/);
+				if (rangeMatch) {
+					const rangeMin = parseFloat(rangeMatch[1]);
+					const rangeMax = parseFloat(rangeMatch[2]);
+					// If input number falls within the range, give very high score
+					if (inputNum >= rangeMin && inputNum <= rangeMax) {
+						return 1.1; // Must exceed exact match to beat fuzzy substring matches
+					}
+				}
+
+				// Check if target is an open-ended range (e.g., "30+", "10+")
+				const openEndedMatch = targetLower.match(/^(\d+\.?\d*)\s*\+$/);
+				if (openEndedMatch) {
+					const minValue = parseFloat(openEndedMatch[1]);
+					// If input is greater than or equal to minimum, give very high score
+					if (inputNum >= minValue) {
+						return 1.1; // Must exceed exact match to beat fuzzy substring matches
+					}
+				}
+			}
+
 			// Starts with (prefix match) - very high score
 			if (targetLower.startsWith(inputLower)) return 0.95;
 

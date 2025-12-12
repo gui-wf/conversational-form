@@ -315,6 +315,32 @@ namespace cf {
 		// Exact match - highest priority
 		if (inputLower === targetLower) return 1.0;
 
+		// Why: Handle numeric range matching (e.g., "2" matches "0-2" better than "11-20")
+		// How: Parse ranges and check if input number falls within target range
+		const inputNum = parseFloat(inputLower);
+		if (!isNaN(inputNum)) {
+			// Check if target is a closed numeric range (e.g., "0-2", "11-20", "5.5-10.2")
+			const rangeMatch = targetLower.match(/^(\d+\.?\d*)\s*[-–—]\s*(\d+\.?\d*)$/);
+			if (rangeMatch) {
+				const rangeMin = parseFloat(rangeMatch[1]);
+				const rangeMax = parseFloat(rangeMatch[2]);
+				// If input number falls within the range, give very high score
+				if (inputNum >= rangeMin && inputNum <= rangeMax) {
+					return 1.1; // Must exceed exact match to beat fuzzy substring matches
+				}
+			}
+
+			// Check if target is an open-ended range (e.g., "30+", "10+")
+			const openEndedMatch = targetLower.match(/^(\d+\.?\d*)\s*\+$/);
+			if (openEndedMatch) {
+				const minValue = parseFloat(openEndedMatch[1]);
+				// If input is greater than or equal to minimum, give very high score
+				if (inputNum >= minValue) {
+					return 1.1; // Must exceed exact match to beat fuzzy substring matches
+				}
+			}
+		}
+
 		// Starts with (prefix match) - very high score
 		if (targetLower.startsWith(inputLower)) return 0.95;
 
@@ -334,6 +360,9 @@ namespace cf {
 			if(elements.length > 1){
 				// the type is not strong with this one..
 				let itemsVisible: Array<ControlElement> = [];
+				// Build visibility map without applying it immediately
+				const visibilityMap = new Map<ControlElement, boolean>();
+
 				for (let i = 0; i < elements.length; i++) {
 					let element: ControlElement = <ControlElement>elements[i];
 					element.highlight = false;
@@ -359,9 +388,9 @@ namespace cf {
 						}
 					}
 
-					// set element visibility and store the score
-					element.visible = elementVisibility;
-					if(elementVisibility && element.visible) {
+					// Store visibility in map instead of applying it
+					visibilityMap.set(element, elementVisibility);
+					if(elementVisibility) {
 						(<any>element).matchScore = maxScore;
 						itemsVisible.push(element);
 					}
@@ -381,9 +410,15 @@ namespace cf {
 				// crude way of checking if list has changed...
 				const hasListChanged: boolean = this.filterListNumberOfVisible != itemsVisible.length;
 				if(hasListChanged){
-					this.animateElementsIn();
+					// Pass visibility map to animation
+					this.animateElementsIn(visibilityMap);
+				} else {
+					// If no animation, apply visibility immediately
+					visibilityMap.forEach((visible, element) => {
+						element.visible = visible;
+					});
 				}
-				
+
 				this.filterListNumberOfVisible = itemsVisible.length;
 
 				// highlight first item
@@ -403,14 +438,22 @@ namespace cf {
 			}
 		}
 
-		public animateElementsIn(){
-		
+		public animateElementsIn(visibilityMap?: Map<any, boolean>){
+
 			if(this.elements.length > 0){
-				this.resize();		
+				// Apply visibility changes BEFORE any height calculations
+				if(visibilityMap) {
+					visibilityMap.forEach((visible, element) => {
+						element.visible = visible;
+					});
+				}
+
+				this.resize();
 				// this.el.style.transition = 'height 0.35s ease-out 0.2s';
-				this.list.style.height = '0px';
+				// Set height to correct target immediately (no intermediate 0px state)
+				const targetHeight = this.list.scrollHeight;
+				this.list.style.height = targetHeight + 'px';
 				setTimeout(() => {
-					this.list.style.height = this.list.scrollHeight + 'px';
 					const elements: Array<IControlElement> = this.getElements();
 
 					setTimeout(() => {

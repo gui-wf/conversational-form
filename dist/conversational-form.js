@@ -4631,6 +4631,30 @@ var cf;
             // Exact match - highest priority
             if (inputLower === targetLower)
                 return 1.0;
+            // Why: Handle numeric range matching (e.g., "2" matches "0-2" better than "11-20")
+            // How: Parse ranges and check if input number falls within target range
+            var inputNum = parseFloat(inputLower);
+            if (!isNaN(inputNum)) {
+                // Check if target is a closed numeric range (e.g., "0-2", "11-20", "5.5-10.2")
+                var rangeMatch = targetLower.match(/^(\d+\.?\d*)\s*[-–—]\s*(\d+\.?\d*)$/);
+                if (rangeMatch) {
+                    var rangeMin = parseFloat(rangeMatch[1]);
+                    var rangeMax = parseFloat(rangeMatch[2]);
+                    // If input number falls within the range, give very high score
+                    if (inputNum >= rangeMin && inputNum <= rangeMax) {
+                        return 1.1; // Must exceed exact match to beat fuzzy substring matches
+                    }
+                }
+                // Check if target is an open-ended range (e.g., "30+", "10+")
+                var openEndedMatch = targetLower.match(/^(\d+\.?\d*)\s*\+$/);
+                if (openEndedMatch) {
+                    var minValue = parseFloat(openEndedMatch[1]);
+                    // If input is greater than or equal to minimum, give very high score
+                    if (inputNum >= minValue) {
+                        return 1.1; // Must exceed exact match to beat fuzzy substring matches
+                    }
+                }
+            }
             // Starts with (prefix match) - very high score
             if (targetLower.startsWith(inputLower))
                 return 0.95;
@@ -4648,6 +4672,8 @@ var cf;
             if (elements.length > 1) {
                 // the type is not strong with this one..
                 var itemsVisible = [];
+                // Build visibility map without applying it immediately
+                var visibilityMap = new Map();
                 for (var i = 0; i < elements.length; i++) {
                     var element = elements[i];
                     element.highlight = false;
@@ -4669,9 +4695,9 @@ var cf;
                             elementVisibility = score >= threshold;
                         }
                     }
-                    // set element visibility and store the score
-                    element.visible = elementVisibility;
-                    if (elementVisibility && element.visible) {
+                    // Store visibility in map instead of applying it
+                    visibilityMap.set(element, elementVisibility);
+                    if (elementVisibility) {
                         element.matchScore = maxScore;
                         itemsVisible.push(element);
                     }
@@ -4689,7 +4715,14 @@ var cf;
                 // crude way of checking if list has changed...
                 var hasListChanged = this.filterListNumberOfVisible != itemsVisible.length;
                 if (hasListChanged) {
-                    this.animateElementsIn();
+                    // Pass visibility map to animation
+                    this.animateElementsIn(visibilityMap);
+                }
+                else {
+                    // If no animation, apply visibility immediately
+                    visibilityMap.forEach(function (visible, element) {
+                        element.visible = visible;
+                    });
                 }
                 this.filterListNumberOfVisible = itemsVisible.length;
                 // highlight first item
@@ -4707,14 +4740,21 @@ var cf;
                 }
             }
         };
-        ControlElements.prototype.animateElementsIn = function () {
+        ControlElements.prototype.animateElementsIn = function (visibilityMap) {
             var _this = this;
             if (this.elements.length > 0) {
+                // Apply visibility changes BEFORE any height calculations
+                if (visibilityMap) {
+                    visibilityMap.forEach(function (visible, element) {
+                        element.visible = visible;
+                    });
+                }
                 this.resize();
                 // this.el.style.transition = 'height 0.35s ease-out 0.2s';
-                this.list.style.height = '0px';
+                // Set height to correct target immediately (no intermediate 0px state)
+                var targetHeight = this.list.scrollHeight;
+                this.list.style.height = targetHeight + 'px';
                 setTimeout(function () {
-                    _this.list.style.height = _this.list.scrollHeight + 'px';
                     var elements = _this.getElements();
                     setTimeout(function () {
                         if (elements.length > 0) {
@@ -6368,6 +6408,30 @@ var cf;
             // Exact match - highest priority
             if (inputLower === targetLower)
                 return 1.0;
+            // Why: Handle numeric range matching (e.g., "2" matches "0-2" better than "11-20")
+            // How: Parse ranges and check if input number falls within target range
+            var inputNum = parseFloat(inputLower);
+            if (!isNaN(inputNum)) {
+                // Check if target is a closed numeric range (e.g., "0-2", "11-20", "5.5-10.2")
+                var rangeMatch = targetLower.match(/^(\d+\.?\d*)\s*[-–—]\s*(\d+\.?\d*)$/);
+                if (rangeMatch) {
+                    var rangeMin = parseFloat(rangeMatch[1]);
+                    var rangeMax = parseFloat(rangeMatch[2]);
+                    // If input number falls within the range, give very high score
+                    if (inputNum >= rangeMin && inputNum <= rangeMax) {
+                        return 1.1; // Must exceed exact match to beat fuzzy substring matches
+                    }
+                }
+                // Check if target is an open-ended range (e.g., "30+", "10+")
+                var openEndedMatch = targetLower.match(/^(\d+\.?\d*)\s*\+$/);
+                if (openEndedMatch) {
+                    var minValue = parseFloat(openEndedMatch[1]);
+                    // If input is greater than or equal to minimum, give very high score
+                    if (inputNum >= minValue) {
+                        return 1.1; // Must exceed exact match to beat fuzzy substring matches
+                    }
+                }
+            }
             // Starts with (prefix match) - very high score
             if (targetLower.startsWith(inputLower))
                 return 0.95;
@@ -6897,8 +6961,8 @@ var cf;
         // override
         OptionButton.prototype.getTemplate = function () {
             // be aware that first option element on none multiple select tags will be selected by default
-            // Why: Check disableSelectPrefill config to control auto-selection behavior
-            var isSelected = cf.ConversationalForm.disableSelectPrefill ? false : this.referenceTag.domElement.selected;
+            // Why: Check prefillDefaultAnswer config to control auto-selection behavior
+            var isSelected = cf.ConversationalForm.prefillDefaultAnswer ? this.referenceTag.domElement.selected : false;
             var tmpl = '<cf-button class="cf-button ' + (this.isMultiChoice ? "cf-checkbox-button" : "") + '" ' + (isSelected ? "selected='selected'" : "") + '>';
             tmpl += "<div>";
             if (this.isMultiChoice)
@@ -8177,7 +8241,11 @@ var cf;
             else {
                 this.buildControlElements([this._currentTag]);
             }
-            if (this._currentTag.defaultValue) {
+            // Prefill input only when prefillDefaultAnswer is enabled
+            // Why: For select elements, only prefill when explicitly enabled to avoid confusing stale values
+            var shouldPrefill = this._currentTag.defaultValue &&
+                (this._currentTag.type !== 'select' || cf.ConversationalForm.prefillDefaultAnswer);
+            if (shouldPrefill) {
                 this.inputElement.value = this._currentTag.defaultValue.toString();
             }
             if (this._currentTag.skipUserInput === true) {
@@ -9465,8 +9533,8 @@ var cf;
                 ConversationalForm.showProgressBar = options.showProgressBar;
             if (typeof options.preventSubmitOnEnter === 'boolean')
                 this.preventSubmitOnEnter = options.preventSubmitOnEnter;
-            if (typeof options.disableSelectPrefill === 'boolean')
-                ConversationalForm.disableSelectPrefill = options.disableSelectPrefill;
+            if (typeof options.prefillDefaultAnswer === 'boolean')
+                ConversationalForm.prefillDefaultAnswer = options.prefillDefaultAnswer;
             if (!ConversationalForm.suppressLog)
                 console.log('Conversational Form > version:', this.version);
             if (!ConversationalForm.suppressLog)
@@ -10003,7 +10071,7 @@ var cf;
         ConversationalForm.suppressLog = true;
         ConversationalForm.showProgressBar = false;
         ConversationalForm.preventSubmitOnEnter = false;
-        ConversationalForm.disableSelectPrefill = false;
+        ConversationalForm.prefillDefaultAnswer = true;
         ConversationalForm.hasAutoInstantiated = false;
         return ConversationalForm;
     }());

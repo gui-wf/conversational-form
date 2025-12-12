@@ -88,8 +88,8 @@ namespace cf {
 
 		animationsEnabled?:boolean;
 
-		// Disable automatic prefilling of first option in select elements
-		disableSelectPrefill?:boolean;
+		// Enable automatic prefilling of default answer in select elements
+		prefillDefaultAnswer?:boolean;
 	}
 
 	// CUI formless options
@@ -106,7 +106,7 @@ namespace cf {
 		public static suppressLog: boolean = true;
 		public static showProgressBar: boolean = false;
 		public static preventSubmitOnEnter: boolean = false;
-		public static disableSelectPrefill: boolean = false;
+		public static prefillDefaultAnswer: boolean = true;
 
 		private cdnPath: string = "https://cdn.jsdelivr.net/gh/space10-community/conversational-form@{version}/dist/";
 		/**
@@ -169,8 +169,8 @@ namespace cf {
 			if(typeof options.preventSubmitOnEnter === 'boolean')
 				this.preventSubmitOnEnter = options.preventSubmitOnEnter;
 
-			if(typeof options.disableSelectPrefill === 'boolean')
-				ConversationalForm.disableSelectPrefill = options.disableSelectPrefill;
+			if(typeof options.prefillDefaultAnswer === 'boolean')
+				ConversationalForm.prefillDefaultAnswer = options.prefillDefaultAnswer;
 
 			if(!ConversationalForm.suppressLog) console.log('Conversational Form > version:', this.version);
 			if(!ConversationalForm.suppressLog) console.log('Conversational Form > options:', options);

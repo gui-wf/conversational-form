@@ -9,26 +9,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### Changed - 2025-12-12
+
+#### ⚠️ BREAKING: Renamed `disableSelectPrefill` to `prefillDefaultAnswer`
+- **Old**: `disableSelectPrefill: boolean` (default: `false`)
+- **New**: `prefillDefaultAnswer: boolean` (default: `true`)
+- **Reason**: Inverted logic for better clarity - now expresses what SHOULD happen (prefill) rather than what should NOT happen (disable)
+
+**Migration:**
+```javascript
+// OLD (v2.0.0)
+disableSelectPrefill: false  // Enable prefilling (default)
+disableSelectPrefill: true   // Disable prefilling
+
+// NEW (v2.1.0+)
+prefillDefaultAnswer: true   // Enable prefilling (default)
+prefillDefaultAnswer: false  // Disable prefilling
+```
+
+**Files Modified:**
+- `src/scripts/cf/ConversationalForm.ts:92` - Renamed option in interface
+- `src/scripts/cf/ConversationalForm.ts:109` - Renamed static property, changed default to `true`
+- `src/scripts/cf/ConversationalForm.ts:172-173` - Process renamed option
+- `src/scripts/cf/ui/control-elements/OptionButton.ts:51` - Inverted logic to check `prefillDefaultAnswer === true`
+- `src/scripts/cf/ui/inputs/UserTextInput.ts:420-421` - Inverted logic for input prefilling
+
+**Impact:** If you were using `disableSelectPrefill`, update to `prefillDefaultAnswer` with inverted value.
+
+---
+
 ## [2.0.0] - 2025-12-11
 
 ### Added
 
-#### Disable Select Prefill Configuration Option
-- **Option**: `disableSelectPrefill: boolean` (default: `false`)
+#### Select Prefill Configuration Option (Now Renamed - See Above)
+- **Option**: `prefillDefaultAnswer: boolean` (default: `true`)
 - **Problem**: HTML select elements automatically select the first option by default, causing confusion for required questions where users expect to make an explicit choice
-- **Solution**: New boolean configuration option to disable automatic prefilling
-
-**Files Modified:**
-- `src/scripts/cf/ConversationalForm.ts:92` - Added to options interface
-- `src/scripts/cf/ConversationalForm.ts:109` - Added static property
-- `src/scripts/cf/ConversationalForm.ts:172-173` - Process option in constructor
-- `src/scripts/cf/ui/control-elements/OptionButton.ts:51` - Check config before applying selected state
+- **Solution**: Boolean configuration option to control automatic prefilling
 
 **Usage:**
 ```javascript
 ConversationalForm.startTheConversation({
   options: {
-    disableSelectPrefill: true
+    prefillDefaultAnswer: false  // Disable prefilling for cleaner UX
   },
   tags: formTags
 })
