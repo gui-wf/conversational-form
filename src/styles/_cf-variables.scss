@@ -4,9 +4,9 @@
 $cf-base-font-size: 18px !default; // Default is 12px. Positions and sizes will be relative to this size.
 $cf-mobile-font-size: 16px !default; // Default is 12px. Positions and sizes will be relative to this size.
 
-$cf-color-background: #fff !default;
-$cf-color-primary: #303030 !default;
-$cf-color-secondary: #E5E6EA !default;
+$cf-color-background: #FFF8E7 !default;
+$cf-color-primary: #6B8E6F !default; // Green for user bubbles
+$cf-color-secondary: #F5E6D3 !default; // Light cream for robot bubbles
 $cf-color-error: #fe8d84 !default;
 
 $cf-font-family: 'Helvetica Neue','Neue Helvetica W01',Helvetica,Arial,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol',sans-serif !default;
@@ -25,11 +25,11 @@ $cf-ease-easeOutBack: cubic-bezier(0.175,  0.885, 0.320, 1.275) !default;
 $cf-chat-response-font-size: $cf-base-font-size !default;
 $cf-chat-response-border-radius: relativeValue(16px) !default;
 
-$cf-color-chat-response-default-text: darken($cf-color-secondary, 70%) !default;
-$cf-color-chat-response-default-bg: $cf-color-secondary !default;
+$cf-color-chat-response-default-text: #2c3e50 !default; // Dark text for robot bubbles
+$cf-color-chat-response-default-bg: $cf-color-secondary !default; // Light cream background
 
-$cf-color-chat-response-user-text: lighten($cf-color-primary, 10%) !default;
-$cf-color-chat-response-user-bg: $cf-color-primary !default;
+$cf-color-chat-response-user-text: #FFFFFF !default; // White text for user bubbles
+$cf-color-chat-response-user-bg: $cf-color-primary !default; // Green background
 
 $cf-avatar-area: relativeValue(33px) !default; //The width/height of Robot and Human image/icon.
 $cf-avatar-size: 100% !default;

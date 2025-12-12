@@ -38,7 +38,7 @@
   width: 100%;
   height: 50px;
   pointer-events: none;
-  background: linear-gradient(to bottom, white 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(to bottom, #fff8e7 0%, rgba(255, 248, 231, 0) 100%);
   position: absolute;
   top: 0px;
   left: 0px;
@@ -85,7 +85,7 @@
   bottom: 0px;
   z-index: 999;
   margin: auto;
-  background: #fff;
+  background: #FFF8E7;
   overflow: hidden;
   opacity: 0;
   will-change: opacity;
@@ -145,7 +145,7 @@ cf-info {
   overflow: hidden;
   display: block;
   transform: translateY(-115%);
-  color: black;
+  color: #000718;
   opacity: 1;
   will-change: opacity;
   font-size: 12px;
@@ -174,7 +174,7 @@ cf-input {
   margin-bottom: 20px;
   margin-top: 0px;
   flex: 0 0 auto;
-  background: #fff;
+  background: #FFF8E7;
 }
 @media (max-width: 1152px) {
   cf-input {
@@ -199,7 +199,7 @@ cf-input input, cf-input textarea {
   padding: calc((60px - 4px - 18px) / 2) 60px calc((60px - 4px - 18px) / 2) calc((60px - 2px - 18px) / 2);
 }
 cf-input input:-webkit-autofill, cf-input textarea:-webkit-autofill {
-  background-color: white;
+  background-color: #FFF8E7;
 }
 cf-input input, cf-input textarea {
   outline: none;
@@ -227,7 +227,7 @@ cf-input input, cf-input textarea {
   min-height: 60px;
   color: rgb(74.8837209302, 78.6279069767, 86.1162790698);
   will-change: box-shadow, background, color, transform, opacity;
-  background: white;
+  background: #FFF8E7;
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.35);
   opacity: 0;
   transform: translateY(40px) rotateX(-40deg);
@@ -236,16 +236,16 @@ cf-input input, cf-input textarea {
   transition: background 0.75s cubic-bezier(0.215, 0.61, 0.355, 1), color 0.75s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.375s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, opacity 0.375s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
 }
 cf-input input:hover::-webkit-input-placeholder, cf-input textarea:hover::-webkit-input-placeholder {
-  color: rgb(3.7209302326, 3.9069767442, 4.2790697674);
+  color: rgb(7.8064516129, 11, 14.1935483871);
 }
 cf-input input:hover::-moz-input-placeholder, cf-input textarea:hover::-moz-input-placeholder {
-  color: rgb(3.7209302326, 3.9069767442, 4.2790697674);
+  color: rgb(7.8064516129, 11, 14.1935483871);
 }
 cf-input input:hover:-moz-input-placeholder, cf-input textarea:hover:-moz-input-placeholder {
-  color: rgb(3.7209302326, 3.9069767442, 4.2790697674);
+  color: rgb(7.8064516129, 11, 14.1935483871);
 }
 cf-input input:hover:-ms-input-placeholder, cf-input textarea:hover:-ms-input-placeholder {
-  color: rgb(3.7209302326, 3.9069767442, 4.2790697674);
+  color: rgb(7.8064516129, 11, 14.1935483871);
 }
 cf-input input::-webkit-input-placeholder, cf-input textarea::-webkit-input-placeholder {
   color: currentColor;
@@ -328,13 +328,13 @@ cf-input[error] .cf-input-button svg polygon {
 }
 cf-input[message] input, cf-input[message] textarea {
   background: #00c2df;
-  color: rgb(19, 224.3094170404, 255);
+  color: #FFFFFF;
 }
 cf-input[message] .cf-input-button {
   background: #00c2df;
 }
 cf-input[message] .cf-input-button svg polygon {
-  fill: rgb(19, 224.3094170404, 255);
+  fill: #FFFFFF;
 }
 cf-input[tag-type=file] cf-input-button.cf-input-button.loading:after {
   content: "";
@@ -576,13 +576,13 @@ cf-list-button {
 }
 @media (min-width: 1152px) {
   cf-list-button:hover:nth-child(1) {
-    background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, white 75%);
+    background: linear-gradient(to left, rgba(255, 248, 231, 0) 0%, #fff8e7 75%);
   }
   cf-list-button:hover:nth-child(1):after {
     animation: cf-arrow-left 0.75s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
   cf-list-button:hover:nth-child(2) {
-    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, white 75%);
+    background: linear-gradient(to right, rgba(255, 248, 231, 0) 0%, #fff8e7 75%);
   }
   cf-list-button:hover:nth-child(2):after {
     animation: cf-arrow-right 0.75s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -604,19 +604,19 @@ cf-list-button:nth-child(1) {
   left: 0px;
 }
 cf-list-button:nth-child(1):before {
-  background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, white 100%);
+  background: linear-gradient(to left, rgba(255, 248, 231, 0) 0%, #fff8e7 100%);
 }
 cf-list-button:nth-child(1):after {
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3c?xml version='1.0' encoding='UTF-8' standalone='no'?%3e%3csvg viewBox='0 0 6 10' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3e%3cg stroke='none' stroke-width='1' fill='%23000000' fill-rule='evenodd'%3e%3cg transform='translate%28-1230.000000, -567.000000%29' %3e%3cg transform='translate%28738.000000, 178.000000%29'%3e%3cg transform='translate%280.000000, 340.000000%29'%3e%3cg transform='translate%28466.000000, 0.000000%29'%3e%3cpolygon transform='translate%2829.000000, 54.000000%29 rotate%28-180.000000%29 translate%28-29.000000, -54.000000%29 ' points='26 50.1538462 27.125 49 32 54 27.125 59 26 57.8461538 29.75 54'%3e%3c/polygon%3e%3c/g%3e%3c/g%3e%3c/g%3e%3c/g%3e%3c/g%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3c?xml version='1.0' encoding='UTF-8' standalone='no'?%3e%3csvg viewBox='0 0 6 10' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3e%3cg stroke='none' stroke-width='1' fill='%23000718' fill-rule='evenodd'%3e%3cg transform='translate%28-1230.000000, -567.000000%29' %3e%3cg transform='translate%28738.000000, 178.000000%29'%3e%3cg transform='translate%280.000000, 340.000000%29'%3e%3cg transform='translate%28466.000000, 0.000000%29'%3e%3cpolygon transform='translate%2829.000000, 54.000000%29 rotate%28-180.000000%29 translate%28-29.000000, -54.000000%29 ' points='26 50.1538462 27.125 49 32 54 27.125 59 26 57.8461538 29.75 54'%3e%3c/polygon%3e%3c/g%3e%3c/g%3e%3c/g%3e%3c/g%3e%3c/g%3e%3c/svg%3e");
 }
 cf-list-button:nth-child(2) {
   right: 0px;
 }
 cf-list-button:nth-child(2):before {
-  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, white 100%);
+  background: linear-gradient(to right, rgba(255, 248, 231, 0) 0%, #fff8e7 100%);
 }
 cf-list-button:nth-child(2):after {
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3c?xml version='1.0' encoding='UTF-8' standalone='no'?%3e%3csvg viewBox='0 0 6 10' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3e%3cg stroke='none' stroke-width='1' fill='%23000000' fill-rule='evenodd'%3e%3cg transform='translate%28-1230.000000, -567.000000%29'%3e%3cg transform='translate%28738.000000, 178.000000%29'%3e%3cg transform='translate%280.000000, 340.000000%29'%3e%3cg transform='translate%28466.000000, 0.000000%29'%3e%3cpolygon points='26 50.1538462 27.125 49 32 54 27.125 59 26 57.8461538 29.75 54'%3e%3c/polygon%3e%3c/g%3e%3c/g%3e%3c/g%3e%3c/g%3e%3c/g%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3c?xml version='1.0' encoding='UTF-8' standalone='no'?%3e%3csvg viewBox='0 0 6 10' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3e%3cg stroke='none' stroke-width='1' fill='%23000718' fill-rule='evenodd'%3e%3cg transform='translate%28-1230.000000, -567.000000%29'%3e%3cg transform='translate%28738.000000, 178.000000%29'%3e%3cg transform='translate%280.000000, 340.000000%29'%3e%3cg transform='translate%28466.000000, 0.000000%29'%3e%3cpolygon points='26 50.1538462 27.125 49 32 54 27.125 59 26 57.8461538 29.75 54'%3e%3c/polygon%3e%3c/g%3e%3c/g%3e%3c/g%3e%3c/g%3e%3c/g%3e%3c/svg%3e");
 }
 cf-list-button:before {
   content: "";
@@ -806,7 +806,7 @@ cf-chat-response {
           backface-visibility: hidden;
   padding-left: 62px;
   margin-top: 8px;
-  color: rgb(51.1627906977, 53.7209302326, 58.8372093023);
+  color: #2c3e50;
   margin-left: 0px;
   margin-right: auto;
   word-break: break-all;
@@ -873,7 +873,7 @@ cf-chat-response.robot.peak-thumb thumb {
 }
 cf-chat-response.disabled {
   pointer-events: none;
-  color: rgb(110.4651162791, 115.988372093, 127.0348837209);
+  color: rgb(89.2419354839, 125.75, 162.2580645161);
 }
 cf-chat-response.disabled text {
   background: rgb(223, 250.8385650224, 255);
@@ -1173,7 +1173,7 @@ cf-list.disabled {
     Input
 */
 .cf-button {
-  background: #fff;
+  background: #FFF8E7;
   cursor: pointer;
   border: 1px solid #00c2df;
   border-radius: calc(24px * 0.88);
@@ -1403,8 +1403,8 @@ cf-radio-button.cf-button[checked=checked] {
   color: #e8e9eb !important;
 }
 cf-radio-button.cf-button[checked=checked] cf-radio {
-  background: #fff;
-  border: 1px solid #fff;
+  background: #FFF8E7;
+  border: 1px solid #FFF8E7;
   pointer-events: none;
 }
 
@@ -1423,7 +1423,7 @@ cf-upload-file-ui {
   height: 60px;
   position: relative;
   top: 0px;
-  color: rgb(19, 224.3094170404, 255);
+  color: #FFFFFF;
   opacity: 0;
   transform: translateY(20px) rotateX(30deg);
   will-change: opacity, transform;
@@ -1476,7 +1476,7 @@ cf-upload-file-progress {
 cf-upload-file-progress:after {
   content: "";
   width: 100%;
-  background: rgb(247.35, 247.35, 247.35);
+  background: rgb(255, 243.5375, 215.7);
   border-radius: 7px;
 }
 cf-upload-file-progress:after, cf-upload-file-progress cf-upload-file-progress-bar {

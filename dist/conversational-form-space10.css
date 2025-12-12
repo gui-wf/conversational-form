@@ -199,7 +199,7 @@ cf-input input, cf-input textarea {
   padding: calc((60px - 4px - 18px) / 2) 60px calc((60px - 4px - 18px) / 2) calc((60px - 2px - 18px) / 2);
 }
 cf-input input:-webkit-autofill, cf-input textarea:-webkit-autofill {
-  background-color: white;
+  background-color: #fff;
 }
 cf-input input, cf-input textarea {
   outline: none;
@@ -227,7 +227,7 @@ cf-input input, cf-input textarea {
   min-height: 60px;
   color: rgb(70.1489361702, 73.4893617021, 86.8510638298);
   will-change: box-shadow, background, color, transform, opacity;
-  background: white;
+  background: #fff;
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.35);
   opacity: 0;
   transform: translateY(40px) rotateX(-40deg);
@@ -236,16 +236,16 @@ cf-input input, cf-input textarea {
   transition: background 0.75s cubic-bezier(0.215, 0.61, 0.355, 1), color 0.75s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.375s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, opacity 0.375s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
 }
 cf-input input:hover::-webkit-input-placeholder, cf-input textarea:hover::-webkit-input-placeholder {
-  color: rgb(1.7872340426, 1.8723404255, 2.2127659574);
+  color: rgb(7.8064516129, 11, 14.1935483871);
 }
 cf-input input:hover::-moz-input-placeholder, cf-input textarea:hover::-moz-input-placeholder {
-  color: rgb(1.7872340426, 1.8723404255, 2.2127659574);
+  color: rgb(7.8064516129, 11, 14.1935483871);
 }
 cf-input input:hover:-moz-input-placeholder, cf-input textarea:hover:-moz-input-placeholder {
-  color: rgb(1.7872340426, 1.8723404255, 2.2127659574);
+  color: rgb(7.8064516129, 11, 14.1935483871);
 }
 cf-input input:hover:-ms-input-placeholder, cf-input textarea:hover:-ms-input-placeholder {
-  color: rgb(1.7872340426, 1.8723404255, 2.2127659574);
+  color: rgb(7.8064516129, 11, 14.1935483871);
 }
 cf-input input::-webkit-input-placeholder, cf-input textarea::-webkit-input-placeholder {
   color: currentColor;
@@ -328,13 +328,13 @@ cf-input[error] .cf-input-button svg polygon {
 }
 cf-input[message] input, cf-input[message] textarea {
   background: #303030;
-  color: rgb(73.5, 73.5, 73.5);
+  color: #FFFFFF;
 }
 cf-input[message] .cf-input-button {
   background: #303030;
 }
 cf-input[message] .cf-input-button svg polygon {
-  fill: rgb(73.5, 73.5, 73.5);
+  fill: #FFFFFF;
 }
 cf-input[tag-type=file] cf-input-button.cf-input-button.loading:after {
   content: "";
@@ -806,7 +806,7 @@ cf-chat-response {
           backface-visibility: hidden;
   padding-left: 62px;
   margin-top: 8px;
-  color: rgb(47.3617021277, 49.6170212766, 58.6382978723);
+  color: #2c3e50;
   margin-left: 0px;
   margin-right: auto;
   word-break: break-all;
@@ -873,7 +873,7 @@ cf-chat-response.robot.peak-thumb thumb {
 }
 cf-chat-response.disabled {
   pointer-events: none;
-  color: rgb(104.329787234, 109.2978723404, 129.170212766);
+  color: rgb(89.2419354839, 125.75, 162.2580645161);
 }
 cf-chat-response.disabled text {
   background: rgb(175.5, 175.5, 175.5);
@@ -1423,7 +1423,7 @@ cf-upload-file-ui {
   height: 60px;
   position: relative;
   top: 0px;
-  color: rgb(73.5, 73.5, 73.5);
+  color: #FFFFFF;
   opacity: 0;
   transform: translateY(20px) rotateX(30deg);
   will-change: opacity, transform;
