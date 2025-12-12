@@ -11,6 +11,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added - 2025-12-12
+
+#### Numeric Range Matching for Select Options
+- **Problem**: Typing "2" would incorrectly match "11-20" instead of "0-2" due to fuzzy matching finding "2" as a substring in "20"
+- **Solution**: Intelligent numeric range detection that checks if input falls within range boundaries
+
+**Features:**
+- **Closed ranges**: "2" correctly matches "0-2" (input 2 is in range [0,2])
+- **Open-ended ranges**: "31" matches "30+" (input 31 >= 30)
+- **Decimal support**: "5.5" matches "5-10" or "5.5+"
+- **Priority scoring**: Range matches score 1.1, higher than exact match (1.0) to beat fuzzy substring matches
+
+**Implementation:**
+- Added range detection in `getWeightedScore()` method
+- Regex patterns: `/^(\d+\.?\d*)\s*[-–—]\s*(\d+\.?\d*)$/` for closed ranges (e.g., "0-2", "11-20")
+- Regex pattern: `/^(\d+\.?\d*)\s*\+$/` for open-ended ranges (e.g., "30+", "10+")
+- Supports various dash types (-, –, —) for internationalization
+
+**Files Modified:**
+- `src/scripts/cf/form-tags/SelectTag.ts:22-46` - Added range matching to scoring logic
+- `src/scripts/cf/ui/control-elements/ControlElements.ts:318-342` - Added range matching to filtering logic
+
+**Usage Example:**
+```javascript
+// Form with numeric range options
+const formFields = [{
+  tag: 'select',
+  name: 'experience',
+  'cf-questions': 'How many years of experience?',
+  children: [
+    { tag: 'option', value: '0-2', 'cf-label': '0-2' },
+    { tag: 'option', value: '3-10', 'cf-label': '3-10' },
+    { tag: 'option', value: '11-20', 'cf-label': '11-20' },
+    { tag: 'option', value: '30+', 'cf-label': '30+' }
+  ]
+}];
+
+// User types "2" → selects "0-2" ✓
+// User types "31" → selects "30+" ✓
+// User types "100" → selects "30+" ✓
+```
+
+---
+
 ### Changed - 2025-12-12
 
 #### ⚠️ BREAKING: Renamed `disableSelectPrefill` to `prefillDefaultAnswer`
