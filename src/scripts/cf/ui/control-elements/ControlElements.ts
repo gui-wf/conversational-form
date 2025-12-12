@@ -449,34 +449,40 @@ namespace cf {
 				}
 
 				this.resize();
-				// this.el.style.transition = 'height 0.35s ease-out 0.2s';
-				// Set height to correct target immediately (no intermediate 0px state)
+
+				// Why: Animate height smoothly from 0 to target
+				// How: Start at 0, force reflow, then set target height
 				const targetHeight = this.list.scrollHeight;
-				this.list.style.height = targetHeight + 'px';
-				setTimeout(() => {
+				this.list.style.height = '0px';
+				this.list.offsetHeight; // Force reflow
+
+				requestAnimationFrame(() => {
+					// Add animate-in class to enable transitions
+					if(!this.el.classList.contains("animate-in"))
+						this.el.classList.add("animate-in");
+
+					// Animate height to target
+					this.list.style.height = targetHeight + 'px';
+
+					// Why: Stagger button animations for smooth cascade effect
+					// How: Delay each button by 50ms using setTimeout
 					const elements: Array<IControlElement> = this.getElements();
+					elements.forEach((element: ControlElement, index: number) => {
+						setTimeout(() => {
+							element.animateIn();
+						}, index * 50);
+					});
 
+					// Scroll to bottom after all animations complete
 					setTimeout(() => {
-						if(elements.length > 0){
-							if(!this.el.classList.contains("animate-in"))
-								this.el.classList.add("animate-in");
-
-							for (let i = 0; i < elements.length; i++) {
-								let element: ControlElement = <ControlElement>elements[i];
-								element.animateIn();
-							}
-							
-						}
-
 						document.querySelector('.scrollableInner').classList.remove('scroll');
 
-						// Check if chatlist is scrolled to the bottom - if not we need to do it manually (pertains to Chrome)
 						const scrollContainer:HTMLElement = document.querySelector('scrollable');
-						if (scrollContainer.scrollTop < scrollContainer.scrollHeight) {
+						if (scrollContainer && scrollContainer.scrollTop < scrollContainer.scrollHeight) {
 							scrollContainer.scrollTop = scrollContainer.scrollHeight;
 						}
-					}, 300);
-				}, 200); 
+					}, 300 + (elements.length * 50));
+				});
 			}
 		}
 

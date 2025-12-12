@@ -38,28 +38,28 @@
 	}
 
 	transform-origin: 0% 100%;
-	will-change: opacity, background;
+	will-change: opacity, transform, filter;
 	opacity: 0;
+	transform: translateY(20px) scale(0.95);
+	filter: blur(10px);
+
 	.conversational-form--enable-animation & {
-		transition: background $cf-anim-time $cf-ease-easeOut;
+		transition: opacity 0.3s $cf-ease-easeOut,
+		           transform 0.3s $cf-ease-easeOut,
+		           filter 0.3s $cf-ease-easeOut,
+		           background $cf-anim-time $cf-ease-easeOut;
 	}
 
 	&.animate-in {
-		.conversational-form--enable-animation & {
-			&:nth-child(even) {
-				transition-delay: 0s, 0s;
-			}
-			&:nth-child(odd) {
-				transition-delay: 0s, 0s;
-			}
-
-			transition-duration: $cf-anim-time * 0.5, $cf-anim-time;
-			transition-timing-function: $cf-ease-easeOut, $cf-ease-easeOut;
-		}
 		opacity: 1;
+		transform: translateY(0) scale(1);
+		filter: blur(0px);
+
 		&.animate-out {
 			transform-origin: 75% 100%;
 			opacity: 0;
+			transform: translateY(10px) scale(0.95);
+			filter: blur(5px);
 		}
 	}
 	

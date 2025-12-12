@@ -56,9 +56,10 @@ cf-input-control-elements {
 }
 
 cf-list, cf-list-button {
-	will-change: auto;
+	will-change: height;
+	overflow: hidden;
 	.conversational-form--enable-animation & {
-		transition: none;
+		transition: height 0.3s $cf-ease-easeOut;
 	}
 }
 

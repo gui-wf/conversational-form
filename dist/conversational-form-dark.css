@@ -820,9 +820,9 @@ cf-chat-response {
   flex-shrink: 0;
   flex-grow: 1;
   position: absolute;
-  visibility: hidden;
-  will-change: height;
-  transition: height 0.3375s cubic-bezier(0.215, 0.61, 0.355, 1);
+  opacity: 0;
+  will-change: height, opacity;
+  transition: height 0.3375s cubic-bezier(0.215, 0.61, 0.355, 1), opacity 0.225s cubic-bezier(0.215, 0.61, 0.355, 1);
   padding-bottom: 12px;
 }
 @media (max-width: 1152px) {
@@ -832,7 +832,7 @@ cf-chat-response {
 }
 cf-chat-response.show {
   position: relative;
-  visibility: visible;
+  opacity: 1;
 }
 cf-chat-response.can-edit {
   cursor: pointer;
@@ -934,7 +934,7 @@ cf-chat-response text > p {
   opacity: 0;
 }
 .conversational-form--enable-animation cf-chat-response text > p.show {
-  animation: moveIn 0.2625s forwards 0.375s cubic-bezier(0.215, 0.61, 0.355, 1);
+  animation: moveIn 0.1875s forwards 0ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 cf-chat-response text > p.hasImage {
   padding: 0;
@@ -1145,10 +1145,11 @@ cf-input-control-elements.two-row.animate-in cf-list:last-of-type {
 }
 
 cf-list, cf-list-button {
-  will-change: auto;
+  will-change: height;
+  overflow: hidden;
 }
 .conversational-form--enable-animation cf-list, .conversational-form--enable-animation cf-list-button {
-  transition: none;
+  transition: height 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 cf-input[tag-type=file] cf-list  {
@@ -1219,28 +1220,24 @@ cf-list.disabled {
 }
 .cf-button {
   transform-origin: 0% 100%;
-  will-change: opacity, background;
+  will-change: opacity, transform, filter;
   opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  filter: blur(10px);
 }
 .conversational-form--enable-animation .cf-button {
-  transition: background 0.75s cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-.conversational-form--enable-animation .cf-button.animate-in:nth-child(even) {
-  transition-delay: 0s, 0s;
-}
-.conversational-form--enable-animation .cf-button.animate-in:nth-child(odd) {
-  transition-delay: 0s, 0s;
-}
-.conversational-form--enable-animation .cf-button.animate-in {
-  transition-duration: 0.375s, 0.75s;
-  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1), cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: opacity 0.3s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1), filter 0.3s cubic-bezier(0.215, 0.61, 0.355, 1), background 0.75s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 .cf-button.animate-in {
   opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
 }
 .cf-button.animate-in.animate-out {
   transform-origin: 75% 100%;
   opacity: 0;
+  transform: translateY(10px) scale(0.95);
+  filter: blur(5px);
 }
 .cf-button:not(:last-child) {
   margin-right: 10px;

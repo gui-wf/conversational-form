@@ -26,9 +26,10 @@ cf-chat-response {
 	flex-shrink:0;
 	flex-grow:1;
 	position: absolute;
-	visibility: hidden;
-	will-change:height;
-	transition:height $cf-anim-time * 0.45 $cf-ease-easeOut;
+	opacity: 0;
+	will-change:height, opacity;
+	transition:height $cf-anim-time * 0.45 $cf-ease-easeOut,
+	           opacity $cf-anim-time * 0.3 $cf-ease-easeOut;
 	padding-bottom: 12px;
 
 	@media (max-width: $cf-breakpoint-medium) {
@@ -37,7 +38,7 @@ cf-chat-response {
 
 	&.show {
 		position: relative;
-		visibility: visible;
+		opacity: 1;
 	}
 	
 	&.can-edit {
@@ -163,7 +164,7 @@ cf-chat-response {
 
 			&.show {
 				.conversational-form--enable-animation & {
-					animation:moveIn $cf-anim-time * 0.35 forwards $cf-anim-time * 0.5 $cf-ease-easeOut;
+					animation:moveIn $cf-anim-time * 0.25 forwards 0ms $cf-ease-easeOut;
 				}
 			}
 

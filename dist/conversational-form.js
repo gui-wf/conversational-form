@@ -4750,29 +4750,34 @@ var cf;
                     });
                 }
                 this.resize();
-                // this.el.style.transition = 'height 0.35s ease-out 0.2s';
-                // Set height to correct target immediately (no intermediate 0px state)
-                var targetHeight = this.list.scrollHeight;
-                this.list.style.height = targetHeight + 'px';
-                setTimeout(function () {
+                // Why: Animate height smoothly from 0 to target
+                // How: Start at 0, force reflow, then set target height
+                var targetHeight_1 = this.list.scrollHeight;
+                this.list.style.height = '0px';
+                this.list.offsetHeight; // Force reflow
+                requestAnimationFrame(function () {
+                    // Add animate-in class to enable transitions
+                    if (!_this.el.classList.contains("animate-in"))
+                        _this.el.classList.add("animate-in");
+                    // Animate height to target
+                    _this.list.style.height = targetHeight_1 + 'px';
+                    // Why: Stagger button animations for smooth cascade effect
+                    // How: Delay each button by 50ms using setTimeout
                     var elements = _this.getElements();
+                    elements.forEach(function (element, index) {
+                        setTimeout(function () {
+                            element.animateIn();
+                        }, index * 50);
+                    });
+                    // Scroll to bottom after all animations complete
                     setTimeout(function () {
-                        if (elements.length > 0) {
-                            if (!_this.el.classList.contains("animate-in"))
-                                _this.el.classList.add("animate-in");
-                            for (var i = 0; i < elements.length; i++) {
-                                var element = elements[i];
-                                element.animateIn();
-                            }
-                        }
                         document.querySelector('.scrollableInner').classList.remove('scroll');
-                        // Check if chatlist is scrolled to the bottom - if not we need to do it manually (pertains to Chrome)
                         var scrollContainer = document.querySelector('scrollable');
-                        if (scrollContainer.scrollTop < scrollContainer.scrollHeight) {
+                        if (scrollContainer && scrollContainer.scrollTop < scrollContainer.scrollHeight) {
                             scrollContainer.scrollTop = scrollContainer.scrollHeight;
                         }
-                    }, 300);
-                }, 200);
+                    }, 300 + (elements.length * 50));
+                });
             }
         };
         ControlElements.prototype.getElements = function () {
@@ -8517,10 +8522,12 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -8546,14 +8553,14 @@ var cf;
             get: function () {
                 return this._tag;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(ChatResponse.prototype, "added", {
             get: function () {
                 return !!this.el || !!this.el.parentNode || !!this.el.parentNode.parentNode;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(ChatResponse.prototype, "disabled", {
@@ -8566,7 +8573,7 @@ var cf;
                 else
                     this.el.classList.remove("disabled");
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         /**
@@ -8616,7 +8623,7 @@ var cf;
         Object.defineProperty(ChatResponse.prototype, "visible", {
             set: function (value) {
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(ChatResponse.prototype, "strippedSesponse", {
@@ -8627,7 +8634,7 @@ var cf;
                 div.innerHTML = html;
                 return div.textContent || div.innerText || "";
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         ChatResponse.prototype.whenReady = function (resolve) {
@@ -8798,10 +8805,10 @@ var cf;
                 var imageTag = innerResponse.match(imageRegex);
                 if (hasImage && imageTag) {
                     innerResponse = innerResponse.replace(imageTag[0], '');
-                    this.textEl.innerHTML = "<p class=\"hasImage\">" + imageTag + "<span>" + innerResponse + "</span></p>";
+                    this.textEl.innerHTML = "<p class=\"hasImage\">".concat(imageTag, "<span>").concat(innerResponse, "</span></p>");
                 }
                 else {
-                    this.textEl.innerHTML = "<p>" + innerResponse + "</p>";
+                    this.textEl.innerHTML = "<p>".concat(innerResponse, "</p>");
                 }
                 var p = this.textEl.getElementsByTagName("p");
                 p[p.length - 1].offsetWidth;
@@ -8870,9 +8877,16 @@ var cf;
         * add one self to the chat list
         */
         ChatResponse.prototype.addSelf = function () {
+            var _this = this;
             if (this.el.parentNode != this.container) {
                 this.container.appendChild(this.el);
-                this.animateIn();
+                // Why: Force reflow to ensure initial CSS state is applied before animation
+                // How: Access offsetHeight property to trigger browser reflow
+                this.el.offsetHeight;
+                // Trigger animation in next frame
+                requestAnimationFrame(function () {
+                    _this.animateIn();
+                });
             }
         };
         /**

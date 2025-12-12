@@ -401,7 +401,13 @@ namespace cf {
 		private addSelf(): void {
 			if(this.el.parentNode != this.container){
 				this.container.appendChild(this.el);
-				this.animateIn();
+				// Why: Force reflow to ensure initial CSS state is applied before animation
+				// How: Access offsetHeight property to trigger browser reflow
+				this.el.offsetHeight;
+				// Trigger animation in next frame
+				requestAnimationFrame(() => {
+					this.animateIn();
+				});
 			}
 		}
 
